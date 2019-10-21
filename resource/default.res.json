@@ -1,0 +1,44 @@
+{
+	"groups": [
+		{
+			"keys": "egret_icon_png,description_json,game_bg_jpg,shengzi1_png,ball_png,nextRound_btn_png",
+			"name": "preload"
+		},
+		{
+			"keys": "",
+			"name": "loading"
+		}
+	],
+	"resources": [
+		{
+			"url": "assets/egret_icon.png",
+			"type": "image",
+			"name": "egret_icon_png"
+		},
+		{
+			"url": "config/description.json",
+			"type": "json",
+			"name": "description_json"
+		},
+		{
+			"name": "game_bg_jpg",
+			"type": "image",
+			"url": "assets/game_bg.jpg"
+		},
+		{
+			"name": "shengzi1_png",
+			"type": "image",
+			"url": "assets/shengzi1.png"
+		},
+		{
+			"name": "ball_png",
+			"type": "image",
+			"url": "assets/ball.png"
+		},
+		{
+			"name": "nextRound_btn_png",
+			"type": "image",
+			"url": "assets/nextRound_btn.png"
+		}
+	]
+}

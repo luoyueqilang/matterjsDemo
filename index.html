@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Egret_matterjs</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="full-screen" content="true" />
+    <meta name="screen-orientation" content="portrait" />
+    <meta name="x5-fullscreen" content="true" />
+    <meta name="360-fullscreen" content="true" />
+    <style>
+        html, body {
+            -ms-touch-action: none;
+            background: #888888;
+            padding: 0;
+            border: 0;
+            margin: 0;
+            height: 100%;
+        }
+    </style>
+<script src="libs/extra/jquery.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script src="libs/extra/wxshare.js"></script>
+
+</head>
+
+<body>
+    <div style="margin: auto;width: 100%;height: 100%;" class="egret-player" data-entry-class="Main" data-orientation="auto" data-scale-mode="noBorder" data-frame-rate="30" data-content-width="750"
+data-content-height="1448" data-multi-fingered="2" data-show-fps="false" data-show-log="false" data-show-fps-style="x:0,y:0,size:12,textColor:0xffffff,bgAlpha:0.9">
+</div>
+<script>
+    //rem屏幕适配
+    // var dpr, rem, scale;
+    // var docEl = document.documentElement;
+    // var fontEl = document.createElement('style');
+    // var metaEl = document.querySelector('meta[name="viewport"]');
+
+    // dpr = window.devicePixelRatio || 1;
+    // rem = docEl.clientWidth * dpr / 10;
+    // scale = 1 / dpr;
+
+    // // 设置viewport，进行缩放，达到高清效果
+    // metaEl.setAttribute('content', 'width=' + dpr * docEl.clientWidth + ',initial-scale=' + scale + ',maximum-scale=' + scale + ', minimum-scale=' + scale + ',user-scalable=no');
+
+    // // 设置data-dpr属性，留作的css hack之用
+    // docEl.setAttribute('data-dpr', dpr);
+
+    // // 动态写入样式
+    // docEl.firstElementChild.appendChild(fontEl);
+    // fontEl.innerHTML = 'html{font-size:' + rem + 'px!important;}';
+
+    // // 给js调用的，某一dpr下rem和px之间的转换函数
+    // window.rem2px = function (v) {
+    //     v = parseFloat(v);
+    //     return v * rem;
+    // };
+    // window.px2rem = function (v) {
+    //     v = parseFloat(v);
+    //     return v / rem;
+    // };
+
+    // window.dpr = dpr;
+    // window.rem = rem;
+</script>
+<script>
+    //动画最佳循环写法
+    // window.RAF = (function () {
+    //     return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) { window.setTimeout(callback, 1000 / 60); };
+    // })();
+</script>
+<script>
+    var loadScript = function (list, callback) {
+        var loaded = 0;
+        var loadNext = function () {
+            loadSingleScript(list[loaded], function () {
+                loaded++;
+                if (loaded >= list.length) {
+                    callback();
+                }
+                else {
+                    loadNext();
+                }
+            })
+        };
+        loadNext();
+    };
+
+    var loadSingleScript = function (src, callback) {
+        var s = document.createElement('script');
+        s.async = false;
+        s.src = src;
+        s.addEventListener('load', function () {
+            s.parentNode.removeChild(s);
+            s.removeEventListener('load', arguments.callee, false);
+            callback();
+        }, false);
+        document.body.appendChild(s);
+    };
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', './manifest.json?v=' + Math.random(), true);
+    xhr.addEventListener("load", function () {
+        var manifest = JSON.parse(xhr.response);
+        var list = manifest.initial.concat(manifest.game);
+        loadScript(list, function () {
+            /**
+             * {
+             * "renderMode":, //Engine rendering mode, "canvas" or "webgl"
+             * "audioType": 0 //Use the audio type, 0: default, 2: web audio, 3: audio
+             * "antialias": //Whether the anti-aliasing is enabled in WebGL mode, true: on, false: off, defaults to false
+             * "calculateCanvasScaleFactor": //a function return canvas scale factor
+             * }
+             **/
+            console.log(window.devicePixelRatio);
+            egret.runEgret({
+                renderMode: "webgl", audioType: 0, calculateCanvasScaleFactor: function (context) {
+                    var backingStore = context.backingStorePixelRatio ||
+                        context.webkitBackingStorePixelRatio ||
+                        context.mozBackingStorePixelRatio ||
+                        context.msBackingStorePixelRatio ||
+                        context.oBackingStorePixelRatio ||
+                        context.backingStorePixelRatio || 1;
+                    return (window.devicePixelRatio || 1) / backingStore;
+                }
+            });
+        });
+    });
+
+    var _precent = document.documentElement.clientWidth / 375;
+    if (document.documentElement.clientHeight / 724 > _precent) {
+        _precent = document.documentElement.clientHeight / 724;
+    }
+    xhr.send(null);
+</script>
+<script src="libs/extra/vconsole.min.js"></script>
+<script>
+        var vConsole = new VConsole();
+
+    </script>
+</body>
+
+</html>
